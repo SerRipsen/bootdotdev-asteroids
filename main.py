@@ -8,6 +8,8 @@ def main():
           Screen height: {SCREEN_HEIGHT}""")
 
     pygame.init()
+    game_clock = pygame.time.Clock()
+    dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     while True:
         log_state()
@@ -15,7 +17,9 @@ def main():
             if event.type == pygame.QUIT:
                 return
         screen.fill("black")
-
+        
+        # set game speed to 60fps
+        dt = game_clock.tick(60) / 1000
 
         # refresh the screen
         pygame.display.flip()
