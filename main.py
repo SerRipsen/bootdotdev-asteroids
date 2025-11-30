@@ -1,7 +1,10 @@
 import pygame
+import sys
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from player import Player
-from logger import log_state
+from logger import log_state, log_event
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 def main():
     print(f"""Starting Asteroids with pygame version: {pygame.version.ver}
@@ -17,10 +20,16 @@ def main():
     # create groups of updatable, drawable
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
-    Player.containers = (updatable, drawable)
+    asteroids = pygame.sprite.Group()
 
-    # create player
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
+
+
+    # create objects
     player = Player((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
+    asteroidfield = AsteroidField()
 
     # main game loop
     while True:
@@ -34,6 +43,13 @@ def main():
         updatable.update(dt)
         for _draw in drawable:
             _draw.draw(screen)
+
+        # check for collisions
+        for _asteroid in asteroids:
+            if _asteroid.collides_with(player):
+                log_event("player_hit")
+                print("Game over!")
+                sys.exit()
             
         
         # set game speed to 60fps and update the clock
