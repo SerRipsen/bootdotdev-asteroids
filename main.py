@@ -59,7 +59,7 @@ def main():
             for _shot in shots:
                 if _asteroid.collides_with(_shot):
                     log_event("asteroid_shot")
-                    _asteroid.kill()
+                    _asteroid.split()
                     _shot.kill()
         
         # set game speed to 60fps and update the clock
