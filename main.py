@@ -47,13 +47,20 @@ def main():
         for _draw in drawable:
             _draw.draw(screen)
 
-        # check for collisions
+        # check for player x asteroid collisions
         for _asteroid in asteroids:
             if _asteroid.collides_with(player):
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
             
+        # check for shot x asteroid collisions
+        for _asteroid in asteroids:
+            for _shot in shots:
+                if _asteroid.collides_with(_shot):
+                    log_event("asteroid_shot")
+                    _asteroid.kill()
+                    _shot.kill()
         
         # set game speed to 60fps and update the clock
         dt = game_clock.tick(60) / 1000
